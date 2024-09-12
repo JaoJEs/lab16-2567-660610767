@@ -112,37 +112,36 @@ export const DELETE = async (request: NextRequest) => {
       {
         ok: false,
         message: parseResult.error.issues[0].message,
-      },
-      { status: 400 }
-    );
+      },{ 
+        status: 400 
+      });
   }
 
-  const foundIndex = DB.students.findIndex(
-    (std) => std.studentId === body.studentId
-  );
-  if (foundIndex === -1) {
-    return NextResponse.json(
-      {
-        ok: false,
-        message: "Student ID does not exist",
-      },
-      { status: 404 }
-    );
+  const foundId = DB.students.findIndex( student => student.studentId === body.studentId)
+
+  if(foundId === -1){
+      return NextResponse.json({
+          ok: false,
+          message: "Student ID does not exist",
+      },{
+          status: 404,
+      });
   }
 
-  DB.students = DB.students.filter((std) => {
-    return std.studentId !== body.studentId
-  });
   
+
   //perform removing student from DB. You can choose from 2 choices
   //1. use array filter method
   // DB.students = DB.students.filter(...);
+  DB.students = DB.students.filter((std) => {
+    return std.studentId !== body.studentId
+  });
 
   //or 2. use splice array method
   // DB.students.splice(...)
 
   return NextResponse.json({
     ok: true,
-    message: `Student Id xxx has been deleted`,
+    message: `Student Id ${body.studentId} has been deleted`,
   });
 };
