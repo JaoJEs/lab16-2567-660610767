@@ -3,6 +3,7 @@ import {
   zStudentGetParam,
   zStudentPostBody,
   zStudentPutBody,
+  zStudentDeleteBody,
 } from "@lib/schema";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -100,8 +101,10 @@ export const PUT = async (request: NextRequest) => {
 };
 
 export const DELETE = async (request: NextRequest) => {
+
   //get body and validate it
   const body = await request.json();
+
   //check if student id exist
   const parseResult = zStudentDeleteBody.safeParse(body);
   if (parseResult.success === false) {
@@ -130,6 +133,7 @@ export const DELETE = async (request: NextRequest) => {
   DB.students = DB.students.filter((std) => {
     return std.studentId !== body.studentId
   });
+  
   //perform removing student from DB. You can choose from 2 choices
   //1. use array filter method
   // DB.students = DB.students.filter(...);
